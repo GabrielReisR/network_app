@@ -33,37 +33,48 @@ load_libraries <- function(){
 load_libraries()
 
 # Network function ====
-network <- 
-  function(
-    # Correlations ====
-    # Correlations of A
-    corrAB = 0.1,
-    corrAC = 0.1,
-    corrAD = 0.1,
-    corrAE = 0.1,
-    
-    # Correlations of B
-    corrBC = 0.1,
-    corrBD = 0.1,
-    corrBE = 0.1,
-    
-    # Correlations of C
-    corrCD = 0.1,
-    corrCE = 0.1,
-    
-    # Correlations of D
-    corrDE = 0.1,
-    
-    # Layout ====
-    layout = 'spring'
-  ){
-    
-    # Create network
-    qgraph(mat,
+create_network <- 
+  
+  function(matrix,
+           # Correlations ====
+           # Correlations of A
+           corrAB,
+           corrAC,
+           corrAD,
+           corrAE,
+           # Correlations of B
+           corrBC,
+           corrBD,
+           corrBE,
+           # Correlations of C
+           corrCD,
+           corrCE,
+           # Correlations of D
+           corrDE,
+           # Layout ====
            layout = 'spring',
-           edge.labels = TRUE,
-           labels = LETTERS[1:5],
-           fade = FALSE)
+           # Graph ====
+           graph = 'pcor') {
     
+    # Create matrix ====
+    mat <- matrix(
+      c(
+             0, corrAB, corrAC, corrAD, corrAE,
+        corrAB,      0, corrBC, corrBD, corrBE,
+        corrAC, corrBC,      0, corrCD, corrCE,
+        corrAD, corrBD, corrCD,      0, corrDE,
+        corrAE, corrBE, corrCE, corrDE,      0
+      ),
+      ncol = 5, nrow = 5,
+      byrow = TRUE)
+    
+    # Create network ====
+    qgraph(
+      mat,
+      layout = layout,
+      edge.labels = TRUE,
+      labels = LETTERS[1:5],
+      fade = FALSE
+    )
     
   }
